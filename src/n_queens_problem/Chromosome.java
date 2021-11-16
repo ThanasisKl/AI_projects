@@ -58,9 +58,9 @@ public class Chromosome implements  Comparable<Chromosome>{
         this.score = findScore();
     }
 
-    public void print(){
+    public void showChessboard(){
 
-        System.out.print("Winner Chromosome: ");
+        System.out.print("Best Chromosome: ");
         for(int i=0; i<genes.length;i++){
             System.out.print(this.genes[i]);
             System.out.print(" ");
@@ -68,7 +68,7 @@ public class Chromosome implements  Comparable<Chromosome>{
         System.out.print(" with score: ");
         System.out.println(this.score);
 
-        System.out.println("----------------------------------");
+        System.out.println("Visual Result:\n");
 
         for(int i=0; i<genes.length; i++){
             for (int j=0; j<genes.length; j++){
@@ -80,7 +80,6 @@ public class Chromosome implements  Comparable<Chromosome>{
             }
             System.out.println("|");
         }
-        System.out.println("----------------------------------");
     }
 
     @Override

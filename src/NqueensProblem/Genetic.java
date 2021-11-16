@@ -1,4 +1,4 @@
-package n_queens_problem;
+package NqueensProblem;
 
 import java.util.ArrayList;
 import java.util.Collections;

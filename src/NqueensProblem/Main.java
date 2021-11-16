@@ -1,4 +1,4 @@
-package n_queens_problem;
+package NqueensProblem;
 
 public class Main {
     public static void main(String[] args){

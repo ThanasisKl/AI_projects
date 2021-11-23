@@ -54,7 +54,6 @@ public class Genetic {
 
         System.out.println("Needed " + loops + " loops...");
         return this.population.get(0);
-//        return test();
     }
 
     private int findSolutionScore(int N) {

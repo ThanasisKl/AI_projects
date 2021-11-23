@@ -8,11 +8,11 @@ public class State implements Comparable<State> {
     private int missionariesLeft;
     private int cannibalsRight;
     private int missionariesRight;
-    private position boatPosition; //true if its on the left, false if its on the right
+    private position boatPosition;
     private State father = null;
     private int heuristicScore;
     private int boatCapacity;
-    private int cost;   //tree depth
+    private int cost;
 
     public State(int N,  int M) {
         this.totalPeople = 2*N;
@@ -26,32 +26,24 @@ public class State implements Comparable<State> {
     }
 
 
-    public State(State oldState){
-        this.setCannibalsLeft(oldState.getCannibalsLeft());
-        this.setCannibalsRight(oldState.getCannibalsRight());
-        this.setMissionariesLeft(oldState.getMissionariesLeft());
-        this.setMissionariesRight(oldState.getMissionariesRight());
-        this.setBoatPos(oldState.getBoatPos());
-        this.setBoatCapacity(oldState.getBoatCapacity());
-        this.setTotalPeople(oldState.getTotalPeople());
-        this.setCost(oldState.getCost());
+    public State(State state){
+        this.cannibalsLeft = state.getCannibalsLeft();
+        this.cannibalsRight = state.getCannibalsRight();
+        this.missionariesLeft = state.getMissionariesLeft();
+        this.missionariesRight = state.getMissionariesRight();
+        this.boatPosition = state.getBoatPos();
+        this.boatCapacity = state.getBoatCapacity();
+        this.totalPeople = state.getTotalPeople();
+        this.cost = state.getCost();
     }
 
-    /*
-    checks if the state is final.By final, we want 0 cannibals and 0 missionaries on the left side
-     */
     public boolean isFinal(){
         return (this.cannibalsLeft == 0 && this.missionariesLeft == 0);
     }
 
-    /*
-    checks is the boat maneuver about to happen is valid(we dont want more canibals on the boat than missionaries)
-     */
-
-    /*
-    checks if a state is valid
-     */
-    public boolean isValid(){return ((this.cannibalsLeft<= this.missionariesLeft || this.missionariesLeft ==0) && (this.cannibalsRight<=this.missionariesRight || this.missionariesRight ==0) );}
+    public boolean isValid(){
+        return ((this.cannibalsLeft<= this.missionariesLeft || this.missionariesLeft ==0) && (this.cannibalsRight<=this.missionariesRight || this.missionariesRight ==0) );
+    }
 
     public boolean isBoatValid(int cannibals,int missionaries){
         return((cannibals + missionaries <= boatCapacity) && (!(cannibals>missionaries && missionaries !=0)) && (!(cannibals ==0 && missionaries ==0))) ;
@@ -88,8 +80,8 @@ public class State implements Comparable<State> {
                 for (int j = 0; j <= missionariesLeft; j++) {
                     State child = new State(this);
                     if(child.moveBoat(i, j, this.boatPosition)){
-                        child.addScore();
-                        child.countRemainingPeople();
+                        child.IncreaseScore();
+                        child.calculateHeuristicScore();
                         child.setFather(this);
                         children.add(child);
                     }
@@ -100,8 +92,8 @@ public class State implements Comparable<State> {
                 if(missionariesRight == 0){
                     State child = new State(this);
                     if(child.moveBoat(i, 0, this.boatPosition)){
-                        child.addScore();
-                        child.countRemainingPeople();
+                        child.IncreaseScore();
+                        child.calculateHeuristicScore();
                         child.setFather(this);
                         children.add(child);
                     }
@@ -109,14 +101,13 @@ public class State implements Comparable<State> {
                     for (int j = 0; j <= missionariesRight; j++) {
                         State child = new State(this);
                         if(child.moveBoat(i, j, this.boatPosition)){
-                            child.addScore();
-                            child.countRemainingPeople();
+                            child.IncreaseScore();
+                            child.calculateHeuristicScore();
                             child.setFather(this);
                             children.add(child);
                         }
                     }
                 }
-
             }
         }
         return children;
@@ -124,35 +115,25 @@ public class State implements Comparable<State> {
 
 
     void print(){
-        System.out.println("-------------------------------------");
-
         for(int i=0; i<cannibalsLeft; i++){
-            System.out.print(" \uD83D\uDC79 " ); //cannibal
+            System.out.print("C" );
         }
-
         System.out.print(" ");
-
         for(int i=0; i<missionariesLeft; i++){
-            System.out.print(" \uD83E\uDDD9 "); //missionaries
+            System.out.print("M");
         }
-
-        System.out.print(" \uD83C\uDF0A \uD83C\uDF0A \uD83C\uDF0A ");
-
-
+        System.out.print(" \uD83C\uDF0A \uD83C\uDF0A \uD83C\uDF0A "); //river
         for(int i=0; i<cannibalsRight; i++){
-            System.out.print(" \uD83D\uDC79 ");  //cannibal
+            System.out.print("C");
         }
-
         System.out.print(" ");
-
         for(int i=0; i<missionariesRight; i++){
-            System.out.print(" \uD83E\uDDD9 ");  //missionaries
+            System.out.print("M");
         }
-        System.out.print("\n");
-        System.out.println("-------------------------------------");
+        System.out.println("\n-------------------------------------");
     }
 
-    private void countRemainingPeople(){
+    private void calculateHeuristicScore(){
         int peopleLeft = missionariesLeft + cannibalsLeft;
         if(boatPosition.equals(position.RIGHT)){
             heuristicScore = 2*peopleLeft;
@@ -170,57 +151,31 @@ public class State implements Comparable<State> {
         return cost;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
     public int getCannibalsLeft() {
         return cannibalsLeft;
-    }
-
-    public void setCannibalsLeft(int cannibalsLeft) {
-        this.cannibalsLeft = cannibalsLeft;
     }
 
     public int getMissionariesLeft() {
         return missionariesLeft;
     }
 
-    public void setMissionariesLeft(int missionariesLeft) {
-        this.missionariesLeft = missionariesLeft;
-    }
-
     public int getCannibalsRight() {
         return cannibalsRight;
-    }
-
-    public void setCannibalsRight(int cannibalsRight) {
-        this.cannibalsRight = cannibalsRight;
     }
 
     public int getMissionariesRight() {
         return missionariesRight;
     }
 
-    public void setMissionariesRight(int missionariesRight) {
-        this.missionariesRight = missionariesRight;
-    }
-
     public position getBoatPos() {
         return boatPosition;
     }
 
-    public void setBoatPos(position boatPos) {
-        this.boatPosition = boatPos;
+    public int getBoatCapacity() {
+        return boatCapacity;
     }
 
-
-    public int getBoatCapacity() { return boatCapacity; }
-
-    public void setBoatCapacity(int boatCapacity) { this.boatCapacity = boatCapacity; }
-
-    State getFather()
-    {
+    State getFather() {
         return this.father;
     }
 
@@ -233,36 +188,22 @@ public class State implements Comparable<State> {
         return totalPeople;
     }
 
-    public void setTotalPeople(int totalPeople) {
-        this.totalPeople = totalPeople;
-    }
-
     @Override
-    public boolean equals(Object obj)
-    {
-        if(this.cannibalsLeft != ((State)obj).cannibalsLeft
-                || this.missionariesLeft != ((State) obj).missionariesLeft
-                || this.boatPosition != ((State) obj).boatPosition) {return false;}
-
-        return true;
+    public boolean equals(Object obj) {
+        if(this.cannibalsLeft == ((State)obj).cannibalsLeft && this.missionariesLeft == ((State) obj).missionariesLeft && this.boatPosition == ((State) obj).boatPosition) {
+            return true;
+        }else{
+            return false;
+        }
     }
-
-//    @Override
-//    public int hashCode()
-//    {
-//        return 2^cannibalsLeft + 5^ missionariesLeft;
-//    }
 
     @Override
     public int compareTo(State s)
     {
-        return Double.compare(this.heuristicScore, s.heuristicScore); // compare based on the heuristic score.
+        return Double.compare(this.heuristicScore, s.heuristicScore);
     }
 
-    public void addScore(){
+    public void IncreaseScore(){
         cost++;
     }
-
-
-
 }

@@ -73,7 +73,7 @@ public class Chromosome implements  Comparable<Chromosome>{
         for(int i=0; i<genes.length; i++){
             for (int j=0; j<genes.length; j++){
                 if (genes[j] == i){
-                    System.out.print("|Q");
+                    System.out.print("|X");
                 }else{
                     System.out.print("| ");
                 }

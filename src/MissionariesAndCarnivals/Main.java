@@ -33,7 +33,7 @@ public class Main {
                 item.print();
             }
             System.out.println();
-            System.out.println("Search time:" + (double)(end - start) / 1000 + " sec.");  // total time of searching in seconds.
+            System.out.println("Search time:" + (double)(end - start) / 1000 + " sec.");  // total time of searching in seconds
         }
     }
 }

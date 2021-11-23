@@ -52,17 +52,13 @@ public class State implements Comparable<State> {
     checks if a state is valid
      */
     public boolean isValid(){return ((this.cannibalsLeft<= this.missionariesLeft || this.missionariesLeft ==0) && (this.cannibalsRight<=this.missionariesRight || this.missionariesRight ==0) );}
-    /*
-     move the boat to the right side of the river
-     */
 
-
-
+    public boolean isBoatValid(int cannibals,int missionaries){
+        return((cannibals + missionaries <= boatCapacity) && (!(cannibals>missionaries && missionaries !=0)) && (!(cannibals ==0 && missionaries ==0))) ;
+    }
 
     public boolean moveBoat(int cannibals, int missionaries , position boatPos){
-        if(cannibals ==0 && missionaries ==0) return false;
-        if(cannibals + missionaries > boatCapacity)return false;
-        if(cannibals>missionaries && missionaries !=0) return false;
+        if(!isBoatValid(cannibals,missionaries))return false;
         if(boatPos.equals(position.LEFT)){
             this.missionariesLeft -= missionaries;
             this.cannibalsLeft -= cannibals;
@@ -131,26 +127,26 @@ public class State implements Comparable<State> {
         System.out.println("-------------------------------------");
 
         for(int i=0; i<cannibalsLeft; i++){
-            System.out.print("C");
+            System.out.print(" \uD83D\uDC79 " ); //cannibal
         }
 
         System.out.print(" ");
 
         for(int i=0; i<missionariesLeft; i++){
-            System.out.print("M");
+            System.out.print(" \uD83E\uDDD9 "); //missionaries
         }
 
-        System.out.print(" ~~~~~~ ");
+        System.out.print(" \uD83C\uDF0A \uD83C\uDF0A \uD83C\uDF0A ");
 
 
         for(int i=0; i<cannibalsRight; i++){
-            System.out.print("C");
+            System.out.print(" \uD83D\uDC79 ");  //cannibal
         }
 
         System.out.print(" ");
 
         for(int i=0; i<missionariesRight; i++){
-            System.out.print("M");
+            System.out.print(" \uD83E\uDDD9 ");  //missionaries
         }
         System.out.print("\n");
         System.out.println("-------------------------------------");
@@ -251,11 +247,11 @@ public class State implements Comparable<State> {
         return true;
     }
 
-    @Override
-    public int hashCode()
-    {
-        return 2^cannibalsLeft + 5^ missionariesLeft;
-    }
+//    @Override
+//    public int hashCode()
+//    {
+//        return 2^cannibalsLeft + 5^ missionariesLeft;
+//    }
 
     @Override
     public int compareTo(State s)

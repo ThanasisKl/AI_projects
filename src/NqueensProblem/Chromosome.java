@@ -26,21 +26,11 @@ public class Chromosome implements  Comparable<Chromosome>{
         return genes;
     }
 
-    public void setGenes(int[] genes) {
-        this.genes = genes;
-    }
-
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-
-
-    private int findScore() {
+    private int findScore() {  //find for a chromosome how many queens are not threatened
         int not_threats = 0;
         for(int i=0;i<this.genes.length;i++){
             for(int j=i+1; j<this.genes.length;j++){ //
@@ -52,13 +42,13 @@ public class Chromosome implements  Comparable<Chromosome>{
         return not_threats;
     }
 
-    public void mutate(int N){
+    public void mutate(int N){ //changes a chromosome number in a random index
         Random r = new Random();
         this.genes[r.nextInt(N)] = r.nextInt(N);
         this.score = findScore();
     }
 
-    public void showChessboard(){
+    public void showChessboard(){  //prints chromosome
 
         System.out.print("Best Chromosome: ");
         for(int i=0; i<genes.length;i++){

@@ -23,17 +23,17 @@ public class Genetic {
             ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
             for (int i=0; i<populationSize; i++){
                 int parent1Index = this.probabilityArray.get(r.nextInt(this.probabilityArray.size()));
-                Chromosome parent1 = this.population.get(parent1Index);
+                Chromosome parent1 = this.population.get(parent1Index);  //parent 1
                 int parent2Index;
                 do{
-                    parent2Index = this.probabilityArray.get(r.nextInt(this.probabilityArray.size()));
+                    parent2Index = this.probabilityArray.get(r.nextInt(this.probabilityArray.size()));  // parent1 != parent2
                 }while(parent2Index != parent1Index);
 
-                Chromosome parent2 = this.population.get(parent2Index);
+                Chromosome parent2 = this.population.get(parent2Index);  //parent 2
 
                 Chromosome child = this.reproduce(parent1,parent2,N);
 
-                if(r.nextDouble() < mutationProbability){
+                if(r.nextDouble() < mutationProbability){     //mutation
                     child.mutate(N);
                 }
 
@@ -44,7 +44,7 @@ public class Genetic {
             Collections.sort(this.population,Collections.reverseOrder());
 
 
-            if(this.population.get(0).getScore() == solutionScore){
+            if(this.population.get(0).getScore() == solutionScore){      //finds solution
                 System.out.println("Needed " + j + " loops....");
                 return this.population.get(0);
             }else{
@@ -52,11 +52,11 @@ public class Genetic {
             }
         }
 
-        System.out.println("Needed " + loops + " loops...");
+        System.out.println("Needed " + loops + " loops...");    //could not find solution so return the chromosome with the best score
         return this.population.get(0);
     }
 
-    private int findSolutionScore(int N) {
+    private int findSolutionScore(int N) {  //finds the score that a chromosome has to have to be the solution
         int sum = 0;
         for(int i=0;i<N;i++){
             sum += i;
@@ -65,7 +65,7 @@ public class Genetic {
         return sum;
     }
 
-    private void updateProbabilityArray() {
+    private void updateProbabilityArray() {  //updates probability array. The chromosome that has a good score is appears in the list most frequently
         this.probabilityArray = new ArrayList<Integer>();
         for (int i=0; i<this.population.size();i++){
             for(int j = 0; j<this.population.get(i).getScore(); j++){
@@ -74,7 +74,7 @@ public class Genetic {
         }
     }
 
-    private Chromosome reproduce(Chromosome x, Chromosome y, int N) {
+    private Chromosome reproduce(Chromosome x, Chromosome y, int N) {   //takes two chromosomes and returns their child
         Random r = new Random();
         int breakIndex = r.nextInt(N-1) + 1;
         int[] childGenes =  new int[N];

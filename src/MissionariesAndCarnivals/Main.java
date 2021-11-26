@@ -7,30 +7,28 @@ public class Main {
     public static void main(String[] args){
         State initialState = new State(3, 2);
         SpaceSearcher searcher = new SpaceSearcher();
-        long start = System.currentTimeMillis();
-        State terminalState = searcher.AstarAlgorithm(initialState);
+        long start = System.currentTimeMillis();       //calcilate time
+        State terminal_state = searcher.AstarAlgorithm(initialState);
         long end = System.currentTimeMillis();
-        if(terminalState == null) System.out.println("Could not find a solution.");
-        else
-        {
-            State temp = terminalState;
-            ArrayList<State> path = new ArrayList<>();
-            path.add(terminalState);
-            while(temp.getFather() != null)
-            {
-                path.add(temp.getFather());
-                temp = temp.getFather();
+        if(terminal_state == null) {
+            System.out.println("Can not find solution.");
+        }else{
+            State state = terminal_state;
+            ArrayList<State> path2solution = new ArrayList<>();
+            path2solution.add(terminal_state);
+            while(state.getFather() != null) { // back-tracking
+                path2solution.add(state.getFather());
+                state = state.getFather();
             }
-            Collections.reverse(path);
+            Collections.reverse(path2solution);   //reverse arraylist
             int i = 1;
-            for(State item: path)
+            for(State st: path2solution)         // print the path from start to finish
             {
                 System.out.println(i+")");
                 i++;
-                item.print();
+                st.showState();
             }
-            System.out.println();
-            System.out.println("Search time:" + (double)(end - start) / 1000 + " sec.");
+            System.out.println("\nSearch time:" + (double)(end - start) / 1000 + " sec."); //print time
         }
     }
 }

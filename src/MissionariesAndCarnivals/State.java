@@ -14,7 +14,7 @@ public class State implements Comparable<State> {
     private int boatCapacity;
     private int cost;
 
-    public State(int N,  int M) {
+    public State(int N,  int M) {         //constructor
         this.totalPeople = 2*N;
         this.cannibalsLeft = N;
         this.missionariesLeft = N;
@@ -26,7 +26,7 @@ public class State implements Comparable<State> {
     }
 
 
-    public State(State state){
+    public State(State state){       //copy constructor
         this.cannibalsLeft = state.getCannibalsLeft();
         this.cannibalsRight = state.getCannibalsRight();
         this.missionariesLeft = state.getMissionariesLeft();
@@ -37,19 +37,19 @@ public class State implements Comparable<State> {
         this.cost = state.getCost();
     }
 
-    public boolean isFinal(){
+    public boolean isFinal(){   //checks if a state is final
         return (this.cannibalsLeft == 0 && this.missionariesLeft == 0);
     }
 
-    public boolean isValid(){
+    public boolean isValid(){   //checks if a state is valid
         return ((this.cannibalsLeft<= this.missionariesLeft || this.missionariesLeft ==0) && (this.cannibalsRight<=this.missionariesRight || this.missionariesRight ==0) );
     }
 
-    public boolean isBoatValid(int cannibals,int missionaries){
+    public boolean isBoatValid(int cannibals,int missionaries){   //checks if a boat is valid
         return((cannibals + missionaries <= boatCapacity) && (!(cannibals>missionaries && missionaries !=0)) && (!(cannibals ==0 && missionaries ==0))) ;
     }
 
-    public boolean moveBoat(int cannibals, int missionaries , position boatPos){
+    public boolean moveBoat(int cannibals, int missionaries , position boatPos){     //moves boat from one side to another
         if(!isBoatValid(cannibals,missionaries))return false;
         if(boatPos.equals(position.LEFT)){
             this.missionariesLeft -= missionaries;
@@ -114,7 +114,7 @@ public class State implements Comparable<State> {
     }
 
 
-    void print(){
+    void showState(){      //prints a state
         for(int i=0; i<cannibalsLeft; i++){
             System.out.print("C" );
         }

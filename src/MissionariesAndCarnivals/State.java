@@ -13,7 +13,6 @@ public class State implements Comparable<State> {
     private int heuristicScore;
     private int boatCapacity;
     private int cost;
-    private int crossings;
 
     public State(int N,  int M) {         //constructor
         this.totalPeople = 2*N;
@@ -24,7 +23,6 @@ public class State implements Comparable<State> {
         this.boatCapacity = M;
         this.boatPosition = position.LEFT;
         this.cost = 0;
-        this.crossings = 0;
     }
 
 
@@ -85,7 +83,6 @@ public class State implements Comparable<State> {
                         child.IncreaseScore();
                         child.calculateHeuristicScore();
                         child.setFather(this);
-                        child.setCrossings(this.getCrossings()+1);
                         children.add(child);
                     }
                 }
@@ -98,7 +95,6 @@ public class State implements Comparable<State> {
                         child.IncreaseScore();
                         child.calculateHeuristicScore();
                         child.setFather(this);
-                        child.setCrossings(this.getCrossings()+1);
                         children.add(child);
                     }
                 }else{
@@ -108,7 +104,6 @@ public class State implements Comparable<State> {
                             child.IncreaseScore();
                             child.calculateHeuristicScore();
                             child.setFather(this);
-                            child.setCrossings(this.getCrossings()+1);
                             children.add(child);
                         }
                     }
@@ -152,10 +147,6 @@ public class State implements Comparable<State> {
         heuristicScore += cost;
     }
 
-    public void setCrossings(int crossings) { this.crossings = crossings; }
-
-    public int getCrossings() { return crossings; }
-
     public int getCost() {
         return cost;
     }
@@ -195,6 +186,12 @@ public class State implements Comparable<State> {
 
     public int getTotalPeople() {
         return totalPeople;
+    }
+
+
+    @Override
+    public int hashCode() {
+        return 7^cannibalsLeft + 5^missionariesLeft;
     }
 
     @Override

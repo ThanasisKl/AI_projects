@@ -23,9 +23,7 @@ public class SpaceSearcher {
             State currentState = this.frontier.remove(0);
 
             if(currentState.isFinal()) return currentState;
-            if(currentState.getCrossings() > crossingsAllowed){
-                return currentState;
-            }
+
             if (!this.closedSet.contains(currentState)){
                 this.closedSet.add(currentState);
                 this.frontier.addAll(currentState.getChildren());

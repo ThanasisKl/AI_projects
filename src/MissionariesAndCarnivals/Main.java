@@ -5,8 +5,8 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args){
-        State initialState = new State(100, 4);
-        int crossingsAllowed = 1000;
+        State initialState = new State(3, 2);// N,M
+        int crossingsAllowed = 1000;                //K
         SpaceSearcher searcher = new SpaceSearcher();
         long start = System.currentTimeMillis();       //calculate time
         State terminal_state = searcher.AstarAlgorithm(initialState,crossingsAllowed);

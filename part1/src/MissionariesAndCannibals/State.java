@@ -1,4 +1,4 @@
-package MissionariesAndCarnivals;
+package MissionariesAndCannibals;
 
 import java.util.ArrayList;
 
